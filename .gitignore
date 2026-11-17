@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+modelos/
+temp/
+saida/
+entrada/
+projetos/
+
+# arquivos da sua marca enviados pelo painel (logo e músicas) ficam fora do repositório
+assets/logo.png
+assets/logo-anterior.png
+assets/logo-enviado.tmp
+assets/.logo-provisorio
+assets/trilhas/*
+!assets/trilhas/.gitkeep

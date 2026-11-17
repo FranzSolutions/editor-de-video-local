@@ -1,0 +1,3 @@
+# Opcional: transcrever pela placa de vídeo NVIDIA (bem mais rápido). Baixa ~700 MB.
+# O cuDNN já vem junto com o ctranslate2; falta só o cuBLAS do CUDA 12.
+nvidia-cublas-cu12
