@@ -1,0 +1,179 @@
+# Presets do Editor de Vídeo Local
+# --------------------------------
+# "padrao" vale para todos os presets. Cada preset lá embaixo muda só o que precisa.
+# Para criar um preset novo, copie um bloco (ex.: reels), troque o nome e ajuste.
+# Tempos em segundos. Cores em hexadecimal.
+# Cores usadas por padrão: verde #1f7a4d | verde escuro #0f2e1f | amarelo #f2b705
+
+padrao:
+  formato: vertical        # vertical (1080x1920) | quadrado (1080x1080) | horizontal (1920x1080)
+  fps: 30
+  duracao_maxima: 0        # 0 = sem limite; se passar, só avisa
+
+  fundo:                   # quando o vídeo não encaixa no formato, o fundo é ele mesmo desfocado
+    desfoque: 20
+    escurecer: 0.08        # 0 = não escurece | 0.2 = bem mais escuro
+
+  audio_externo:           # usado quando você passa --audio
+    modo: substituir       # substituir | mixar
+    volume_original: 0.25  # no modo mixar: volume do som do vídeo (1 = como está)
+    volume_locucao: 1.0
+
+  transcricao:
+    modelo: small          # tiny | base | small | medium | large-v3 (maior = melhor e mais lento)
+    idioma: pt
+    palavras_chave: ""     # ex.: "NomeDaMarca Produto" — ajuda o Whisper a escrever certo nomes próprios
+    prompt_inicial: "Hã, é... tipo, né?"   # incentiva transcrever os vícios
+
+  cortes:
+    ativo: true
+    pausa_maxima: 0.6      # pausas maiores que isso são cortadas
+    margem: 0.15           # respiro mantido antes e depois de cada fala
+    remover_vicios: false  # ou use --remover-vicios
+    vicios:                # "é..." = só hesitação ("é..." ou "ééé") | "tipo," = só com vírgula
+      - hã
+      - hãã
+      - ahn
+      - hum
+      - hmm
+      - "é..."
+      - "tipo,"
+      - né
+
+  legendas:
+    ativo: true
+    fonte: Montserrat ExtraBold
+    arquivo_fonte: Montserrat-ExtraBold.ttf   # dentro de assets/fontes/
+    tamanho: auto          # auto ou número em pixels
+    altura: auto           # auto ou fração da altura onde fica a base da legenda (0.70 = 70%)
+    cor: "#ffffff"
+    cor_destaque: "#f2b705"
+    cor_contorno: "#000000"
+    contorno: auto
+    sombra: auto
+    palavras_min: 2
+    palavras_max: 4
+    max_caracteres: 18
+    pausa_quebra: 0.35     # pausa que faz começar um bloco novo
+    maiusculas: true
+    remover_pontuacao: true   # tira . , ; : (mantém ? e !)
+    animacao: true         # "pulo" leve quando cada bloco aparece
+
+  trilha:
+    ativo: true            # sem nenhuma música em assets/trilhas/, o vídeo sai sem trilha (só avisa)
+    arquivo: aleatoria     # nome em assets/trilhas/ ou "aleatoria"
+    volume_db: -12         # volume da música em relação à voz (mais negativo = mais baixo)
+    ducking: true
+    ducking_intensidade: 8 # quanto a música abaixa quando alguém fala (4 a 20)
+    fade_in: 1.0
+    fade_out: 2.0
+
+  logo:
+    ativo: false           # ligue depois de colocar o seu logo (pelo painel ou em assets/)
+    arquivo: logo.png      # dentro de assets/ (ou caminho completo)
+    largura: 0.16          # fração da largura do vídeo
+    posicao: superior_direito   # superior_direito | superior_esquerdo | inferior_direito | inferior_esquerdo
+    margem_x: 0.05         # fração da largura
+    margem_y: 0.05         # fração da altura
+    opacidade: 0.9
+
+  chamada_final:
+    ativo: true
+    duracao: 2.5
+    transicao: 0.4
+    efeito: fade           # fade | fadeblack | slideup | smoothup | circleopen | ...
+    arquivo: ""            # vídeo pronto (ex.: vinheta do Remotion) no lugar da tela gerada
+    cor_fundo: "#0f2e1f"
+    cor_fundo_2: "#1f7a4d" # centro do degradê; deixe "" para fundo liso
+    logo: false            # logo na tela final (precisa do arquivo de logo)
+    linhas:                # tamanho = fração do lado menor do vídeo
+      - texto: "Gostou do vídeo?"
+        cor: "#ffffff"
+        tamanho: 0.075
+      - texto: "Siga para mais"
+        cor: "#f2b705"
+        tamanho: 0.1
+
+  normalizar:
+    ativo: true
+    lufs: -14              # padrão das redes sociais
+    pico: -1.0
+    lra: 11
+
+  exportar:
+    crf: 20                # menor = mais qualidade e arquivo maior (18 a 23)
+    preset_x264: medium
+    audio_kbps: 192
+
+  legenda_youtube: false   # grava também um .srt para subir no YouTube (Legendas > Enviar arquivo)
+  capas: 0                 # quantas fotos do vídeo salvar para montar a thumbnail
+  shorts:
+    quantidade: 0          # quantos Shorts cortar sozinho deste vídeo (0 = nenhum)
+    preset: shorts         # preset usado para montar cada Short
+    duracao_min: 30
+    duracao_max: 60
+
+
+reels:
+  formato: vertical
+
+stories:
+  formato: vertical
+  duracao_maxima: 60       # o Instagram corta stories em 60 s
+  legendas:
+    altura: 0.66           # um pouco mais alto: no rodapé do Stories fica a caixa de resposta
+  chamada_final:
+    duracao: 2.0
+
+feed:
+  formato: quadrado
+
+podcast:                   # corte de podcast / entrevista / conversa
+  formato: vertical
+  cortes:
+    pausa_maxima: 0.8      # conversa tem pausas naturais; corta só as longas
+  trilha:
+    ativo: false           # a gravação já tem som próprio
+
+
+# ---------------------------------------------------------------------------------
+# YouTube: vídeo longo + Shorts tirados dele. Sem logo, sem tela final no vídeo longo
+# e sem música (no YouTube, só use músicas da Biblioteca de Áudio).
+
+youtube:                   # vídeo longo (12 a 25 min), deitado
+  formato: horizontal
+  cortes:
+    pausa_maxima: 0.5      # cortes secos entre as frases, ritmo de YouTube
+  legendas:
+    ativo: false           # no vídeo longo a legenda vai como arquivo (.srt), não queimada
+  legenda_youtube: true
+  trilha:
+    ativo: false
+  logo:
+    ativo: false
+  chamada_final:
+    ativo: false           # a tela final do YouTube é colocada no YouTube Studio
+  capas: 4
+  shorts:
+    quantidade: 3          # 3 Shorts de 30 a 60 s por vídeo longo
+  exportar:
+    preset_x264: fast      # vídeo longo: exporta mais rápido (o YouTube recomprime)
+
+shorts:                    # Shorts (os cortados do vídeo longo e os gravados à parte)
+  formato: vertical
+  trilha:
+    ativo: false
+  logo:
+    ativo: false
+  chamada_final:
+    duracao: 2.0
+    logo: false
+    cor_fundo: "#101010"
+    cor_fundo_2: "#2e2e2e"
+    linhas:
+      - texto: "Vídeo completo"
+        cor: "#ffffff"
+        tamanho: 0.085
+      - texto: "no canal"
+        cor: "#f2b705"
+        tamanho: 0.085
